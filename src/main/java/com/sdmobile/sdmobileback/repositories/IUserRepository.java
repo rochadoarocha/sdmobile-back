@@ -6,5 +6,6 @@ import com.sdmobile.sdmobileback.entities.User;
 
 public interface IUserRepository extends JpaRepository <User, Integer> {
 
+	User findByUsername(String username);
 }
 	
