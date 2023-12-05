@@ -1,5 +1,6 @@
 package com.sdmobile.sdmobileback.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +44,6 @@ public class PostService {
         	User userToSet = userRepository.findById(postCreateDto.getUserId()).get();
             Post newPost = new Post(postCreateDto.getText(), postCreateDto.getPublicationDate(),userToSet);
             postRepository.save(newPost);
-            newPost.getUser().setPassword("");
             List<Like> likes = likeRepository.findLikesByPostId(newPost.getId());
             Integer qtdLikes = likes.size();
             UserReadDto userDto = new UserReadDto(userToSet);
@@ -65,6 +65,7 @@ public class PostService {
                     return new PostReadDto(post.getId(), post.getText(), post.getPublicationDate(), userReadDto, likesCount);
                 })
                 .collect(Collectors.toList());
+		Collections.reverse(postReadDtos);
         return ResponseEntity.status(HttpStatus.OK).body(postReadDtos);
     }
 	
@@ -75,6 +76,7 @@ public class PostService {
 				Integer userId = post.getUser().getId();
 				if(dto.getUserId().equals(userId)) {
 					commentRepository.deleteCommentsByPostId(dto.getPostId());
+					likeRepository.deleteLikesByPostId(dto.getPostId());
 					postRepository.deleteById(dto.getPostId());
 					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 				}else {
