@@ -7,6 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SdmobileBackApplication {
 
 	public static void main(String[] args) {
+		
+		
+		String PORT = System.getenv("PORT");
+		
 		SpringApplication.run(SdmobileBackApplication.class, args);
 	}
 
