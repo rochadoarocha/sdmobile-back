@@ -67,9 +67,9 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found - User not found."),
             @ApiResponse(responseCode = "500", description = "Internal Server Error.")
     })
-	@DeleteMapping("api/user")
-	public ResponseEntity<?> deleteUser (@PathVariable Integer userId){
-		return userService.deleteUser(userId);
+	@DeleteMapping("api/user/{id}")
+	public ResponseEntity<?> deleteUser (@PathVariable Integer id){
+		return userService.deleteUser(id);
 	}
 	
 	@Operation(summary = "Get User by ID", description = "Endpoint to retrieve a user by ID.")
