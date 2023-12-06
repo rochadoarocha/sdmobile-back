@@ -1,4 +1,4 @@
-	package com.sdmobile.sdmobileback.controllers;
+package com.sdmobile.sdmobileback.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
