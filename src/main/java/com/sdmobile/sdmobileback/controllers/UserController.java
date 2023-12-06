@@ -28,19 +28,19 @@ public class UserController {
 	}
 	
 	
-	@PostMapping("api/user")
+	@PostMapping("api/users")
 	public ResponseEntity<UserReadDto> createUser (@RequestBody UserCreateDto userCreateDto){
 		return userService.createUser(userCreateDto);
 	}
 	
 	
-	@DeleteMapping("api/user/{id}")
+	@DeleteMapping("api/users/{id}")
 	public ResponseEntity<?> deleteUser (@PathVariable Integer id){
 		return userService.deleteUser(id);
 	}
 	
 
-	@GetMapping("api/user/{id}")
+	@GetMapping("api/users/{id}")
 	public ResponseEntity<UserReadDto> getUserById(@PathVariable Integer id){
 		return userService.getUserById(id);
 	}

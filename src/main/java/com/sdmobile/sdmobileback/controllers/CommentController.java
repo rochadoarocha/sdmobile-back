@@ -19,18 +19,18 @@ public class CommentController {
 	@Autowired
 	private CommentService commentService;
 	
-	@PostMapping("api/comment")
+	@PostMapping("api/comments")
 	public ResponseEntity<?> createComment (@RequestBody CommentCreateDto commentCreateDto){
 		return commentService.createComment(commentCreateDto);
 
 	}
 	
-	@GetMapping("api/comment/{id}")
+	@GetMapping("api/comments/{id}")
 	public ResponseEntity<?> getCommentsByPostId (@PathVariable Integer id){
 		return commentService.getCommentsByPostID(id);
 	}
 	
-	@DeleteMapping("api/comment")
+	@DeleteMapping("api/comments")
 	public ResponseEntity<?> deleteComment (@RequestBody CommentDeleteDto commentDeleteDto){
 		return commentService.deleteComment(commentDeleteDto);
 	}

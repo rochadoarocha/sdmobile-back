@@ -18,17 +18,17 @@ public class PostController {
 	private PostService postService;
 	
 	
-	@PostMapping("api/post")
+	@PostMapping("api/posts")
 	public ResponseEntity<?> createPost (@RequestBody PostCreateDto postCreateDto){
 		return postService.createPost(postCreateDto);
 	}
 	
-	@GetMapping("api/post")
+	@GetMapping("api/posts")
 	public ResponseEntity<?> getPosts (){
 		return postService.getPosts();
 	}
 	
-	@DeleteMapping("api/post")
+	@DeleteMapping("api/posts")
 	public ResponseEntity<?> deletePost (@RequestBody PostDeleteDto dto){
 		return postService.deletePosts(dto);
 	}

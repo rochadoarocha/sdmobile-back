@@ -18,12 +18,12 @@ public class LikeController {
 	private LikeService likeService;
 	
 	
-	@PostMapping("api/like")
+	@PostMapping("api/likes")
 	public ResponseEntity<?> toggleLike(@RequestBody LikeCreateDto likeCreateDto){
 		return likeService.toggleLike(likeCreateDto);
 	}
 	
-	@GetMapping("api/like/{id}")
+	@GetMapping("api/likes/{id}")
 	public ResponseEntity<?> getLikeByPostId(@PathVariable Integer id){
 		return likeService.getLikesByPostId(id);
 	}
