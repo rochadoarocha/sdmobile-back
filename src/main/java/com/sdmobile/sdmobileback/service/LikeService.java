@@ -52,7 +52,9 @@ public class LikeService {
 	            newLike.setUser(userOptional.get());
 	            newLike.setPost(postOptional.get());
 	            likeRepository.save(newLike);
-	            return ResponseEntity.status(HttpStatus.CREATED).build();
+				UserReadDto userDto = new UserReadDto(newLike.getUser());
+				LikesReadDto likeDto = new LikesReadDto(newLike.getUser().getId(), userDto);
+	            return ResponseEntity.status(HttpStatus.CREATED).body(likeDto);
 	        }
 		}catch(Exception e){
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
