@@ -40,7 +40,9 @@ public class CommentService {
 			Post postToComment = postRepository.findById(commentDto.getPostId()).get();
 			Comment newComment = new Comment(commentDto.getText(),commentDto.getCommentDate(),userToComment,postToComment);
 			commentRepository.save(newComment);
-			return ResponseEntity.status(HttpStatus.CREATED).build();
+			UserReadDto userDto = new UserReadDto(newComment.getUser());
+		    CommentReadDto commentReadDto = new CommentReadDto(newComment.getId(),newComment.getText(),newComment.getCommentDate(),userDto);
+			return ResponseEntity.status(HttpStatus.CREATED).body(commentReadDto);
 		}catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
