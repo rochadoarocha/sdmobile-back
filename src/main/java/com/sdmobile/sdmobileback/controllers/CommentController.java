@@ -1,4 +1,4 @@
-package com.sdmobile.sdmobileback.controllers;
+	package com.sdmobile.sdmobileback.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +13,6 @@ import com.sdmobile.sdmobileback.dto.create.CommentCreateDto;
 import com.sdmobile.sdmobileback.dto.delete.CommentDeleteDto;
 import com.sdmobile.sdmobileback.service.CommentService;
 
-import jakarta.validation.Valid;
-
 @RestController
 public class CommentController {
 	
@@ -22,7 +20,7 @@ public class CommentController {
 	private CommentService commentService;
 	
 	@PostMapping("api/comment")
-	public ResponseEntity<?> createComment (@Valid @RequestBody CommentCreateDto commentCreateDto){
+	public ResponseEntity<?> createComment (@RequestBody CommentCreateDto commentCreateDto){
 		return commentService.createComment(commentCreateDto);
 
 	}

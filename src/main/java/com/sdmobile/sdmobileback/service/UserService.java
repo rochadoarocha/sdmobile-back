@@ -6,13 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import com.sdmobile.sdmobileback.dto.create.UserCreateDto;
 import com.sdmobile.sdmobileback.dto.create.UserLoginDto;
 import com.sdmobile.sdmobileback.dto.read.UserReadDto;
 import com.sdmobile.sdmobileback.entities.User;
 import com.sdmobile.sdmobileback.repositories.IUserRepository;
-
-import jakarta.validation.Valid;
 
 @Service
 public class UserService {
@@ -21,7 +20,7 @@ public class UserService {
 	private IUserRepository userRepository;
 	
 	
-	public ResponseEntity<UserReadDto> LoginUser (@Valid @RequestBody UserLoginDto userLoginDto){
+	public ResponseEntity<UserReadDto> LoginUser (@RequestBody UserLoginDto userLoginDto){
 		try {
 		User userToLogin = userRepository.findByUsername(userLoginDto.getUsername());
 		if(userToLogin != null) {
@@ -39,7 +38,7 @@ public class UserService {
 		}
 	}
 	
-	public ResponseEntity<UserReadDto> createUser (@Valid @RequestBody UserCreateDto userCreateDto){
+	public ResponseEntity<UserReadDto> createUser (@RequestBody UserCreateDto userCreateDto){
 		try {
 			User isUserAlreadyCreated = userRepository.findByUsername(userCreateDto.getUsername());
 			if (isUserAlreadyCreated != null) {

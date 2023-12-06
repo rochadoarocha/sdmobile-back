@@ -22,8 +22,6 @@ import com.sdmobile.sdmobileback.repositories.ILikeRepository;
 import com.sdmobile.sdmobileback.repositories.IPostsRepository;
 import com.sdmobile.sdmobileback.repositories.IUserRepository;
 
-import jakarta.validation.Valid;
-
 @Service
 public class PostService {
 	
@@ -39,7 +37,7 @@ public class PostService {
 	@Autowired
 	private ILikeRepository likeRepository;
 	
-	public ResponseEntity<PostReadDto> createPost(@Valid @RequestBody PostCreateDto postCreateDto) {
+	public ResponseEntity<PostReadDto> createPost(@RequestBody PostCreateDto postCreateDto) {
         try {
         	User userToSet = userRepository.findById(postCreateDto.getUserId()).get();
             Post newPost = new Post(postCreateDto.getText(), postCreateDto.getPublicationDate(),userToSet);
