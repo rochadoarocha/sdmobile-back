@@ -102,9 +102,8 @@ public class PostService {
                 UserReadDto userReadDto = new UserReadDto(user);
 				List<Like> likes = likeRepository.findLikesByPostId(id);
                 int likesCount = likes.size();
-				PostReadDto postReadDto = new PostReadDto(postToGet.getId(), postToGet.getText(), postToGet.getPublicationDate(), userReadDto, likesCount);
 				List<Integer> likedBy = postRepository.findUserIdsByPostId(id);
-				LikeResponseDto response = new LikeResponseDto(postReadDto,likedBy);
+				GetPostsFix response = new GetPostsFix (postToGet.getId(), postToGet.getText(), postToGet.getPublicationDate(), userReadDto, likesCount, likedBy);
 				return ResponseEntity.status(HttpStatus.OK).body(response);
 			}else{
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
