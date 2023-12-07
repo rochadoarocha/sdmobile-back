@@ -21,6 +21,11 @@ public interface ILikeRepository extends JpaRepository<Like, Integer> {
     @Transactional
     void deleteLikesByPostId(@Param("postId") Integer postId);
 
+    @Modifying
+    @Query("DELETE FROM Like l WHERE l.user.id = :userId")
+    @Transactional
+    void deleteLikesByUserId(@Param("userId") Integer userId);
+
 	Optional<Like> findByUserIdAndPostId(Integer userId, Integer postId);
 
 }

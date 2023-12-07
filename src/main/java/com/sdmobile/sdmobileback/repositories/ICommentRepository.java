@@ -20,6 +20,10 @@ public interface ICommentRepository extends JpaRepository<Comment, Integer> {
 	@Transactional
 	void deleteCommentsByPostId(@Param("postId") Integer postId);
 
+	@Modifying
+	@Query("DELETE FROM Comment c WHERE c.user.id = :userId")
+	@Transactional
+	void deleteCommentsByUserId(@Param("userId") Integer userId);
 
 
 }

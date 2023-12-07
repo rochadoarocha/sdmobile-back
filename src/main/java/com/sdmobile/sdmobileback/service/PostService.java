@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.sdmobile.sdmobileback.dto.create.PostCreateDto;
 import com.sdmobile.sdmobileback.dto.delete.PostDeleteDto;
+import com.sdmobile.sdmobileback.dto.read.GetPostsFix;
+import com.sdmobile.sdmobileback.dto.read.LikeResponseDto;
 import com.sdmobile.sdmobileback.dto.read.PostReadDto;
 import com.sdmobile.sdmobileback.dto.read.UserReadDto;
 import com.sdmobile.sdmobileback.entities.Like;
@@ -53,19 +55,20 @@ public class PostService {
         }
     }
 	
-	public ResponseEntity<List<PostReadDto>> getPosts(){
+	public ResponseEntity<?> getPosts(){
 		List<Post> posts = postRepository.findAll();
-		List<PostReadDto> postReadDtos = posts.stream()
-                .map(post -> {
-                    User user = post.getUser();
-                    UserReadDto userReadDto = new UserReadDto(user);
-                    List<Like> likes = likeRepository.findLikesByPostId(post.getId());
-                    int likesCount = likes.size();
-                    return new PostReadDto(post.getId(), post.getText(), post.getPublicationDate(), userReadDto, likesCount);
-                })
-                .collect(Collectors.toList());
-		Collections.reverse(postReadDtos);
-        return ResponseEntity.status(HttpStatus.OK).body(postReadDtos);
+		List<GetPostsFix> response = posts.stream()
+				.map(post -> {
+					User user = post.getUser();
+					UserReadDto userReadDto = new UserReadDto(user);
+					List<Like> likes = likeRepository.findLikesByPostId(post.getId());
+					int likesCount = likes.size();
+					List<Integer> likedBy = postRepository.findUserIdsByPostId(post.getId());
+					return new GetPostsFix(post.getId(), post.getText(), post.getPublicationDate(), userReadDto, likesCount, likedBy);
+						})
+    			.collect(Collectors.toList());
+		Collections.reverse(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 	
 	public ResponseEntity<?> deletePosts(@RequestBody PostDeleteDto dto){
@@ -100,7 +103,9 @@ public class PostService {
 				List<Like> likes = likeRepository.findLikesByPostId(id);
                 int likesCount = likes.size();
 				PostReadDto postReadDto = new PostReadDto(postToGet.getId(), postToGet.getText(), postToGet.getPublicationDate(), userReadDto, likesCount);
-				return ResponseEntity.status(HttpStatus.OK).body(postReadDto);
+				List<Integer> likedBy = postRepository.findUserIdsByPostId(id);
+				LikeResponseDto response = new LikeResponseDto(postReadDto,likedBy);
+				return ResponseEntity.status(HttpStatus.OK).body(response);
 			}else{
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 			}
