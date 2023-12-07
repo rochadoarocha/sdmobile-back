@@ -11,13 +11,25 @@ import com.sdmobile.sdmobileback.dto.create.UserCreateDto;
 import com.sdmobile.sdmobileback.dto.create.UserLoginDto;
 import com.sdmobile.sdmobileback.dto.read.UserReadDto;
 import com.sdmobile.sdmobileback.entities.User;
+import com.sdmobile.sdmobileback.repositories.ICommentRepository;
+import com.sdmobile.sdmobileback.repositories.ILikeRepository;
+import com.sdmobile.sdmobileback.repositories.IPostsRepository;
 import com.sdmobile.sdmobileback.repositories.IUserRepository;
 
 @Service
 public class UserService {
 	
 	@Autowired
+	private ICommentRepository commentRepository;
+	
+	@Autowired
+	private IPostsRepository postRepository;
+	
+	@Autowired
 	private IUserRepository userRepository;
+	
+	@Autowired
+	private ILikeRepository likeRepository;
 	
 	
 	public ResponseEntity<UserReadDto> LoginUser (@RequestBody UserLoginDto userLoginDto){
@@ -74,13 +86,16 @@ public class UserService {
 		try {
 			User userToDelete = userRepository.findById(userId).get();
 			if(userToDelete != null) {
+				commentRepository.deleteCommentsByUserId(userId);
+				likeRepository.deleteLikesByUserId(userId);
+				postRepository.deletePostByUserId(userId);
 				userRepository.deleteById(userId);
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário Deletado");
 			}else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não Encontrado");
 			}
 		}catch(Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 			
 		}
 	}
