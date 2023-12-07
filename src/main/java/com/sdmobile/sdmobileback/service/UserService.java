@@ -86,9 +86,9 @@ public class UserService {
 		try {
 			User userToDelete = userRepository.findById(userId).get();
 			if(userToDelete != null) {
+				postRepository.deletePostByUserId(userId);
 				commentRepository.deleteCommentsByUserId(userId);
 				likeRepository.deleteLikesByUserId(userId);
-				postRepository.deletePostByUserId(userId);
 				userRepository.deleteById(userId);
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário Deletado");
 			}else {
