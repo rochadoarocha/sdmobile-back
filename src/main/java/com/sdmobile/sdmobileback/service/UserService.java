@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -81,14 +82,16 @@ public class UserService {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 }
-	
+	@Transactional
 	public ResponseEntity<?> deleteUser (@PathVariable Integer userId){
 		try {
 			User userToDelete = userRepository.findById(userId).get();
 			if(userToDelete != null) {
-				postRepository.deletePostByUserId(userId);
-				commentRepository.deleteCommentsByUserId(userId);
-				likeRepository.deleteLikesByUserId(userId);
+				userRepository.deleteCommentsByUserIdAndPostUserId(userId);
+				userRepository.deleteLikesByUserIdAndPostUserId(userId);
+		 		userRepository.deletePostByUserId(userId);
+				userRepository.deleteLikesByUserId(userId);
+				userRepository.deleteCommentsByUserId(userId);
 				userRepository.deleteById(userId);
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário Deletado");
 			}else {
