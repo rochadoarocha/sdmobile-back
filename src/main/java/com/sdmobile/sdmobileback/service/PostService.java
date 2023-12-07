@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.sdmobile.sdmobileback.dto.create.PostCreateDto;
@@ -85,6 +86,25 @@ public class PostService {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 			}
 		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+		
+	}
+
+	public ResponseEntity<?> getPostById (@PathVariable Integer id){
+		try {
+			Post postToGet = postRepository.findById(id).get();
+			if(postToGet != null){
+				User user = postToGet.getUser();
+                UserReadDto userReadDto = new UserReadDto(user);
+				List<Like> likes = likeRepository.findLikesByPostId(id);
+                int likesCount = likes.size();
+				PostReadDto postReadDto = new PostReadDto(postToGet.getId(), postToGet.getText(), postToGet.getPublicationDate(), userReadDto, likesCount);
+				return ResponseEntity.status(HttpStatus.OK).body(postReadDto);
+			}else{
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		}catch (Exception e){
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 		
